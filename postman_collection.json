@@ -1,0 +1,162 @@
+{
+  "info": {
+    "_postman_id": "",
+    "name": "Laravel API Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"\",\n    \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            }
+          }
+        },
+        {
+          "name": "Registrar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"name\": \"\",\n    \"email\": \"\",\n    \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios"]
+            }
+          }
+        },
+        {
+          "name": "Cambiar Contraseña",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/password/{id}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "password", "{id}"]
+            }
+          }
+        },
+
+        {
+            "name": "Eliminar Usuario",
+            "request":{
+
+                "method":"DELETE",
+                "header":[],
+                "url": {
+                  "raw": "{{base_url}}/api/usuarios/{id}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "usuarios", "{id}"]
+                }
+            }
+
+        }
+
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Login Cliente",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"\",\n    \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/loginCliente",
+              "host": ["{{base_url}}"],
+              "path": ["api", "loginCliente"]
+            }
+          }
+        },
+        {
+          "name": "Obtener Clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/clientes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "clientes"]
+            }
+          }
+        },
+        {
+          "name": "Cambiar Contraseña Cliente",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cambioPassword/{id}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cambioPassword", "{id}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Obtener Productos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/productos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost"
+    }
+  ]
+}

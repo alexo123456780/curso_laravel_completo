@@ -33,7 +33,8 @@ class ProductoController extends Controller
 
             'status' => true,
             'message' => 'Se obtuvieron todos los productos correctamente',
-            'data' => $productos
+            'data' => $productos,
+            'code' => 200
         ],200);
 
         
@@ -58,63 +59,102 @@ class ProductoController extends Controller
     public function store(Request $request)
     {
 
-
-        $productosValidados = $request->validate([
-
-            'nombre_producto' => 'required|string|max:255',
-            'precio_producto' => 'required|numeric',
-            'descripcion' => 'required|nullable|string'
-
-        ]);
-
-
         try{
 
-            $productoNuevo = Productos::create($productosValidados);
+            $productoValidados = $request->validate([
 
-            if(!$productoNuevo){
+                'nombre_producto' => 'required|string|max:255',
+                'precio_producto' => 'required|numeric',
+                'descripcion' => 'required|string|nullable',
+                'usuario_id' => 'required|exists:usuarios,id',
+                'imagen_producto' => 'required|string|nullable'
+
+            ]);
+
+
+
+            $productoNuevo = Productos::create($productoValidados);
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Producto creado exitosamente',
+                'data' => $productoNuevo,
+                'code' => 200
+
+            ],200);
+
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error de validacion',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+       
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        try{
+
+            $productoEncontrado = Productos::find($id);
+
+            if(!$productoEncontrado){
 
                 return response()->json([
 
                     'status' => false,
-                    'message' => 'Ocurrio un error en la validacion de datos',
-                    'response' => 400
+                    'message' => 'El id del producto no existe',
+                    'code' => 404,
 
-                ],400);
-
+                ],404);
             }
 
 
             return response()->json([
 
                 'status' => true,
-                'message' => 'Producto creado exitosamente',
-                'data' => $productoNuevo
+                'message' => 'Producto encontrado exitosamente',
+                'data' => $productoEncontrado,
+                'code' => 200
 
             ],200);
 
-
-
         }catch(\Exception $e){
-
 
             return response()->json([
 
                 'status' => false,
-                'message' => 'Ocurrio un error en la solicitud',
-                'response' => 400
+                'message' => 'Ocurrio un error interno en la peticion'.$e->getMessage(),
+                'code' => 400
 
             ],400);
 
-        }        
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+        }
+        
     }
 
     /**
@@ -128,16 +168,128 @@ class ProductoController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+
+        try{
+
+            $productoEncontrado = Productos::find($id);
+
+
+            $productoValidados = $request->validate([
+
+                'nombre_producto' => 'required|string|max:255',
+                'precio_producto' => 'required|numeric',
+                'descripcion' => 'required|string|nullable'
+
+            ]);
+
+            if(!$productoEncontrado){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El id del producto no existe',
+                    'code' => 404
+
+                ],404);
+
+
+            }
+
+        
+
+
+            $productoEncontrado->update($productoValidados);
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'El producto se actualizo correctamente',
+                'data' => $productoEncontrado,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'error de validacion',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+
+
+            ],500);
+
+
+        }
+
+        
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+
+        try{
+
+            $productoEncontrado = Productos::find($id);
+
+            if(!$productoEncontrado){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El numero del id no existe',
+                    'code' => 404
+
+                ],404);
+
+            }
+
+
+            $productoEncontrado->delete();
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Producto eliminado exitosamente',
+                'code' => 200,
+
+            ],200);
+
+
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 400
+
+            ],400);
+
+        }
+        
     }
 }
