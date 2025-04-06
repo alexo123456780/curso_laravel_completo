@@ -25,6 +25,13 @@ class Productos extends Model
     }
 
 
+    public function clientes(){
+
+        return $this->belongsToMany(Clientes::class, 'carritos','producto_id', 'cliente_id')->withPivot('cantidad_productos')->withTimestamps();
+
+    }
+
+
 
     
 }

@@ -84,10 +84,11 @@ class ClientesController extends Controller
                 'password' => 'required|min:4|max:8|string',
                 'telefono' => 'required|max:10|string',
                 'direccion' =>'required|max:255|string',
-                'perfil_cliente' => 'required|string|max:255|nullable'
+                'perfil_cliente' => 'required|string|nullable'
             ]);
 
             $clienteValidacion['password'] = Hash::make($clienteValidacion['password']);
+
 
             $clienteNuevo = Clientes::create($clienteValidacion);
 
@@ -334,6 +335,88 @@ class ClientesController extends Controller
 
     }
     }
+
+
+    //funcion para ver el carrito del cliente y los productos que tiene en su carrito
+
+
+
+    public function verCarrito($id){
+
+        try{
+
+
+            $carrito = Clientes::with('productos')->find($id);
+
+
+            if(!$carrito){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El id del cliente no existe o no se encuentra en la base de datos:  '.$id.' id desconocido',
+                    'code' => 404
+
+                ],404);
+
+            }
+
+
+
+            if($carrito['productos']->isEmpty()){
+
+                return response()->json([
+
+                    'status' => true,
+                    'message' => 'El cliente no tiene productos en el carrito aun',
+                    'data' => [],
+                    'code' => 200
+
+                ],200);
+
+            }
+
+
+            $productosCarrito = $carrito['productos'];
+
+
+
+            return response()->json([
+
+
+                'status' => true,
+                'message' => 'Productos del carrito obtenido correctamente',
+                'data' => $productosCarrito,
+                'code' => 200
+
+            ],200);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+            ],500);
+
+        }
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
+
 
     /**
      * Remove the specified resource from storage.

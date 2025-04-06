@@ -12,6 +12,48 @@ class CategoriaController extends Controller
      */
     public function index()
     {
+
+        try{
+
+            $allCategories = Categorias::all();
+
+
+            if($allCategories->isEmpty()){
+
+                return response()->json([
+
+                    'status' => 'true',
+                    'message' => 'No hay Categorias Existententes Aun',
+                    'data' => [],
+                    'code' => 404
+
+                ],404);
+
+            }
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Se obtuvieron todas las categorias correctamente',
+                'data' => $allCategories,
+                'code' => 200
+            ],200);
+
+
+        }catch(\Exception $e){
+
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
         
     }
 
@@ -33,7 +75,8 @@ class CategoriaController extends Controller
 
             $categoriaValidada = $request->validate([
 
-                'nombre_categoria' => 'string|max:255|unique:categorias|required'
+                'nombre_categoria' => 'string|max:255|unique:categorias|required',
+                'imagen_categoria' => 'required|string'
 
             ]);
 
@@ -80,10 +123,107 @@ class CategoriaController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+
+        try{
+
+            $categoriaEncontrada = Categorias::find($id);
+
+            if(!$categoriaEncontrada){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El id '.   $id.  ' no existe o no se encuentra en la base de datos',
+                    'code' => 404
+
+                ],404);
+            }
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Categoria encontrada exitosamente',
+                'data' => $categoriaEncontrada,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
+        
     }
+
+
+    public function crearCategoria(Request $request){
+
+        try{
+
+            $categoriaValidada = $request->validate([
+
+                'nombre_categoria' => 'required|string|max:255',
+                'imagen_categoria' => 'required|string|nullable'
+            ]);
+
+
+
+            
+            $categoriaNueva = Categorias::create($categoriaValidada);
+
+
+            return response()->json([
+
+                'status' => 'true',
+                'message' => 'Categoria Creada Exitosamente',
+                'data' => $categoriaNueva,
+                'code' => 201
+
+            ],201);
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error de validacion',
+                'warning' => $e->errors(),
+                'code' =>400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+            ],500);
+
+        }
+
+
+    }
+
+
+
+
 
     /**
      * Show the form for editing the specified resource.

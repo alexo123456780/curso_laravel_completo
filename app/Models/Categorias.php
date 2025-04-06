@@ -12,7 +12,7 @@ class Categorias extends Model
     use HasFactory;
 
 
-    protected $fillable = ['nombre_categoria'];
+    protected $fillable = ['nombre_categoria','imagen_categoria'];
 
 
     public function producto(){

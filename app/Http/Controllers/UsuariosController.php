@@ -63,7 +63,8 @@ class UsuariosController extends Controller
 
                 'nombre' => 'required|string|max:255',
                 'email' => 'required|string|max:255',
-                'password' => 'required|string|min:4|max:255'
+                'password' => 'required|string|min:4|max:255',
+                "perfil_usuario" => "string|nullable"
 
             ]);
 

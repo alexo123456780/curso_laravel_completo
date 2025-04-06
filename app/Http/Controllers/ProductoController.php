@@ -50,7 +50,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -67,6 +67,7 @@ class ProductoController extends Controller
                 'precio_producto' => 'required|numeric',
                 'descripcion' => 'required|string|nullable',
                 'usuario_id' => 'required|exists:usuarios,id',
+                "categoria_id" =>"required|exists:categorias,id",
                 'imagen_producto' => 'required|string|nullable'
 
             ]);
@@ -112,6 +113,66 @@ class ProductoController extends Controller
         }
        
     }
+
+
+    public function crearProducto(Request $request){
+
+        try{
+
+            $productosValidados = $request->validate([
+
+                'nombre_producto' => 'required|string|max:255',
+                'precio_producto' => 'required|numeric',
+                'descripcion' => 'required|string|nullable',
+                'usuario_id' => 'required|exists:usuarios,id',
+                "categoria_id" =>"required|exists:categorias,id",
+                'imagen_producto' => 'required|string|nullable'
+
+
+            ]);
+
+
+
+            $productoNuevo = Productos::create($productosValidados);
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Producto creado exitosamente',
+                'data' => $productoNuevo,
+                'code' => 201
+
+            ],201);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error de validacion',
+                'warning' => $e->errors(),
+                'code' => 400
+
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' =>$e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
+    }
+
+
 
     /**
      * Display the specified resource.
@@ -180,7 +241,8 @@ class ProductoController extends Controller
 
                 'nombre_producto' => 'required|string|max:255',
                 'precio_producto' => 'required|numeric',
-                'descripcion' => 'required|string|nullable'
+                'descripcion' => 'required|string|nullable',
+                'imagen_producto' =>  'required|string|nullable'
 
             ]);
 

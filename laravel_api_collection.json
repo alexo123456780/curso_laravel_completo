@@ -1,0 +1,626 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "API Laravel Curso Completo",
+    "description": "Colección de todos los endpoints disponibles en la API del Curso Completo de Laravel",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Autenticación",
+      "item": [
+        {
+          "name": "Login Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"contraseña\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "login"]
+            },
+            "description": "Iniciar sesión como usuario y obtener token de autenticación"
+          },
+          "response": []
+        },
+        {
+          "name": "Login Cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"cliente@ejemplo.com\",\n    \"password\": \"contraseña\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/loginCliente",
+              "host": ["{{base_url}}"],
+              "path": ["api", "loginCliente"]
+            },
+            "description": "Iniciar sesión como cliente y obtener token de autenticación"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Usuarios",
+      "item": [
+        {
+          "name": "Listar Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios"]
+            },
+            "description": "Obtener listado de todos los usuarios"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Usuario",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{usuario_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{usuario_id}}"]
+            },
+            "description": "Obtener información de un usuario específico"
+          },
+          "response": []
+        },
+        {
+          "name": "Registrar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Nombre Usuario\",\n    \"email\": \"usuario@ejemplo.com\",\n    \"password\": \"contraseña\",\n    \"perfil_usuario\": \"admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "register"]
+            },
+            "description": "Registrar un nuevo usuario"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre\": \"Nombre Actualizado\",\n    \"email\": \"usuario_actualizado@ejemplo.com\",\n    \"password\": \"nueva_contraseña\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{usuario_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{usuario_id}}"]
+            },
+            "description": "Actualizar información de un usuario"
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Contraseña",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"nueva_contraseña\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/password/{{usuario_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "password", "{{usuario_id}}"]
+            },
+            "description": "Cambiar contraseña de un usuario"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/usuarios/{{usuario_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "usuarios", "{{usuario_id}}"]
+            },
+            "description": "Eliminar un usuario"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Listar Clientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/clientes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "clientes"]
+            },
+            "description": "Obtener listado de todos los clientes"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Cliente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/clientes/{{cliente_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "clientes", "{{cliente_id}}"]
+            },
+            "description": "Obtener información de un cliente específico"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Cliente",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre_cliente\": \"Nombre Cliente\",\n    \"email\": \"cliente@ejemplo.com\",\n    \"password\": \"contraseña\",\n    \"telefono\": \"1234567890\",\n    \"direccion\": \"Dirección del cliente\",\n    \"perfil_cliente\": \"regular\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/clientes",
+              "host": ["{{base_url}}"],
+              "path": ["api", "clientes"]
+            },
+            "description": "Crear un nuevo cliente"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre_cliente\": \"Nombre Actualizado\",\n    \"email\": \"cliente_actualizado@ejemplo.com\",\n    \"password\": \"nueva_contraseña\",\n    \"telefono\": \"0987654321\",\n    \"direccion\": \"Nueva dirección\",\n    \"perfil_cliente\": \"premium\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/clientes/{{cliente_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "clientes", "{{cliente_id}}"]
+            },
+            "description": "Actualizar información de un cliente"
+          },
+          "response": []
+        },
+        {
+          "name": "Cambiar Contraseña Cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"password\": \"nueva_contraseña\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/cambioPassword/{{cliente_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "cambioPassword", "{{cliente_id}}"]
+            },
+            "description": "Cambiar contraseña de un cliente"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Productos",
+      "item": [
+        {
+          "name": "Listar Productos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/productos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Obtener listado de todos los productos"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Producto",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/productos/{{producto_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos", "{{producto_id}}"]
+            },
+            "description": "Obtener información de un producto específico"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Producto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre_producto\": \"Nombre del Producto\",\n    \"precio_producto\": 99.99,\n    \"descripcion\": \"Descripción detallada del producto\",\n    \"usuario_id\": 1,\n    \"categoria_id\": 1,\n    \"imagen_producto\": \"url_imagen.jpg\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/productos",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos"]
+            },
+            "description": "Crear un nuevo producto"
+          },
+          "response": []
+        },
+        {
+          "name": "Actualizar Producto",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre_producto\": \"Nombre Actualizado\",\n    \"precio_producto\": 149.99,\n    \"descripcion\": \"Nueva descripción del producto\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/productos/{{producto_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos", "{{producto_id}}"]
+            },
+            "description": "Actualizar información de un producto"
+          },
+          "response": []
+        },
+        {
+          "name": "Eliminar Producto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/productos/{{producto_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "productos", "{{producto_id}}"]
+            },
+            "description": "Eliminar un producto"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Categorías",
+      "item": [
+        {
+          "name": "Listar Categorías",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categorias",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Obtener listado de todas las categorías"
+          },
+          "response": []
+        },
+        {
+          "name": "Obtener Categoría",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/categorias/{{categoria_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categorias", "{{categoria_id}}"]
+            },
+            "description": "Obtener información de una categoría específica"
+          },
+          "response": []
+        },
+        {
+          "name": "Crear Categoría",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nombre_categoria\": \"Nombre de la Categoría\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/categorias",
+              "host": ["{{base_url}}"],
+              "path": ["api", "categorias"]
+            },
+            "description": "Crear una nueva categoría"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "tu_token_aqui",
+      "type": "string"
+    },
+    {
+      "key": "usuario_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "cliente_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "producto_id",
+      "value": "1",
+      "type": "string"
+    },
+    {
+      "key": "categoria_id",
+      "value": "1",
+      "type": "string"
+    }
+  ]
+}

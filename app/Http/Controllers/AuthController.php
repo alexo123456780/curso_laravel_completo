@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-
 class AuthController extends Controller{
 
 
@@ -34,7 +33,8 @@ class AuthController extends Controller{
 
 
                 return response()->json([
-
+                    'nombre' => $user['nombre'],
+                    'id' => $user['id'],
                     'status' => true,
                     'message' => 'Inicio de sesion exitoso',
                     'token' => $token,
