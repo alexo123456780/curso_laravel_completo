@@ -8,90 +8,7 @@ use App\Models\Productos;
 
 class CarritosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-
-    public function verCarrito($id){
-
-        try{
-
-
-
-
-            //la funcion whit sirve para ver algo relacion de una clave foranea en este caso el de productos
-            $carritos = Carrito::with('productos')->find($id);
-
-
-            if(!$carritos){
-
-                return response()->json([
-
-                    'status' => false,
-                    'message' => 'El id del carrito no existe',
-                    'code' => 404
-                ],404);
-
-            }
-
-
-            $productoEncontrados = $carritos->productos;
-
-            return response()->json([
-
-                'status' => true,
-                'message' => 'Productos encontrados',
-                'data' => $productoEncontrados,
-                'code' => 200
-            ],200);
-
-
-        }catch(\Exception $e){
-
-            return response()->json([
-
-                'status' => false,
-                'message' => 'Ocurrio un error interno en la solicitud',
-                'warning' => $e->getMessage(),
-                'code' => 500
-
-        
-            ],500);
-
-        }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    }
-
-
-
-
-
+   
 
     //funcion para agregar al carrito 
 
@@ -107,10 +24,21 @@ class CarritosController extends Controller
             ]);
 
 
+            $productoExistente = Carrito::where('cliente_id', $validaciones['cliente_id'])->where('producto_id',$validaciones['producto_id'])->exists();
+
+
+            if($productoExistente){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El carrito existe actualmente',
+                    'data' => 400
+
+                ],400);
+            }
+
             $productoAgregado = Carrito::create($validaciones);
-
-            
-
 
             return response()->json([
 
@@ -149,44 +77,52 @@ class CarritosController extends Controller
 
     }
 
-    
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+
+    //eliminar carrito
+
+    public function eliminarCarrito($id){
+
+        try{
+
+            $productoCarrito = Carrito::find($id);
+
+
+            if(!$productoCarrito){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'No existe el id:  '.$id.' del carrito solicitado',
+                    'code' => 404
+
+                ],404);
+            }
+
+
+            $productoCarrito->delete();
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'El articulo del carrito ha sido eliminado',
+                'code' => 200
+
+            ],200);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

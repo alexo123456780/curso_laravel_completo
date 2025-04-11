@@ -47,7 +47,7 @@ class ClientesAuthController extends Controller
                 return response()->json([
 
                     'status' => false,
-                    'message' => 'credenciales incorrectas',
+                    'message' => 'credenciales invalidas crack',
                     'code' => 400
 
                 ],400);
@@ -85,10 +85,5 @@ class ClientesAuthController extends Controller
 
 
     }
-
-
-
-
-
-    
+   
 }

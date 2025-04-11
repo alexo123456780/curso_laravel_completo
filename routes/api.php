@@ -15,6 +15,7 @@ use App\Http\Controllers\CategoriaController;
 
 use App\Http\Controllers\CarritosController;
 
+use App\Http\Controllers\VentasController;
 
 //login usuarios
 Route::post('login',[AuthController::class,'login']);
@@ -25,6 +26,7 @@ Route::post('login',[AuthController::class,'login']);
 Route::apiResource('usuarios',UsuariosController::class);
 Route::put('password/{id}',[UsuariosController::class,'cambiarPassword']);
 Route::post('register',[UsuariosController::class,'register']);
+Route::put('cambiarFoto/{id}',[UsuariosController::class, 'cambiarFoto']);
 
 
 
@@ -35,6 +37,8 @@ Route::post('register',[UsuariosController::class,'register']);
 Route::apiResource('clientes',ClientesController::class);
 Route::put('cambioPassword/{id}',[ClientesController::class,'cambiarPasswordCliente']);
 Route::post('loginCliente',[ClientesAuthController::class,'login']);
+Route::post('registrarCliente',[ClientesController::class,'registrarCliente']);
+Route::put('cambiarFotoCliente/{id}',[ClientesController::class,'cambiarFoto']);
 
 //carrito de clientes
 
@@ -49,6 +53,7 @@ Route::get('productosCarro/{id}',[ClientesController::class,'verCarrito']);
 //productos
 Route::apiResource('productos',ProductoController::class);
 Route::post('crearProducto',[ProductoController::class,'crearProducto']);
+Route::put('cambiarImagenP/{id}',[ProductoController::class,'cambiarImagenProducto']);
 
 
 
@@ -57,6 +62,7 @@ Route::post('crearProducto',[ProductoController::class,'crearProducto']);
 //categorias
 Route::apiResource('categorias',CategoriaController::class);
 Route::post('crearCategoria',[CategoriaController::class,'crearCategoria']);
+Route::put('cambiarImagenC/{id}',[CategoriaController::class, 'cambiarImagenCategoria']);
 
 
 
@@ -64,7 +70,12 @@ Route::post('crearCategoria',[CategoriaController::class,'crearCategoria']);
 
 Route::post('addCar',[CarritosController::class,'addCar']);
 
+Route::delete('eliminarCarrito/{id}',[CarritosController::class,'eliminarCarrito']);
+
 /*comentadodidiiadadao
 Route::get('verCarrito/{id}',[CarritosController::class,'verCarrito']);*/
 
 
+//ventas
+
+Route::post('ventas',[VentasController::class, 'registrarCompra']);

@@ -38,7 +38,7 @@ class AuthController extends Controller{
                     'status' => true,
                     'message' => 'Inicio de sesion exitoso',
                     'token' => $token,
-                    'user' => $user,
+                    'data' => $user,
                     'code' => 200
 
                 ],200);

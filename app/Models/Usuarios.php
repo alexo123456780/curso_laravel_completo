@@ -26,3 +26,4 @@ class Usuarios extends Authenticatable
 
     
 }
+

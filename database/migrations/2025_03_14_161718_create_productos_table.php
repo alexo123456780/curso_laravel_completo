@@ -18,6 +18,10 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             //entablo la relacion de el id del usuario con un producto
 
+
+            //nota foreign son llaves foraneas que no pertenecen a una tabla
+        
+
             //el metodo ondelete('cascade) sirve para borrar un producto que ya no tiene relacion con el usuarios
             $table->foreignId("usuario_id")->constrained('usuarios')->onDelete('cascade');
             $table->foreignId('categoria_id')->constrained('categorias')->onDelete('cascade');

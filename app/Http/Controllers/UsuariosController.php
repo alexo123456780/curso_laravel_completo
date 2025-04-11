@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UsuariosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    
     public function index()
     {
 
@@ -43,17 +41,8 @@ class UsuariosController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+   
+   
     public function register(Request $request)
     {
 
@@ -233,14 +222,7 @@ class UsuariosController extends Controller
 
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
+   
 
     public function update(Request $request , $id){
 
@@ -311,11 +293,7 @@ class UsuariosController extends Controller
 
 
     
-    /**
-     * Remove the specified resource from storage.
-     */
-
-
+   
      public function destroy($id){
 
         try{
@@ -364,5 +342,76 @@ class UsuariosController extends Controller
 
 
 
-   
+     //cambiar foto de perfil 
+
+
+
+     public function cambiarFoto(Request $request , $id){
+
+
+        try{
+
+            $imagenValidada = $request->validate([
+
+                'perfil_usuario' => 'required|string|nullable'
+
+            ]);
+
+
+            $usuario = Usuarios::find($id);
+
+
+            if(!$usuario){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El usuario con el id:  ' .$id. ' no existe o no se encuentra en la base de datos',
+                    'code' => 404
+
+                ],404);
+
+            }
+
+
+            $usuario->update($imagenValidada);
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'El perfil del usuario ha sido cambiado correctamnete',
+                'data' => $usuario,
+                'code' => 200
+
+            ],200);
+
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Hay un error de validacion',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Hay un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
+
+     }
 }

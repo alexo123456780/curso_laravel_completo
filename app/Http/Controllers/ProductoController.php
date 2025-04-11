@@ -8,9 +8,7 @@ use App\Models\Productos;
 
 class ProductoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+   
     public function index()
     {
 
@@ -41,21 +39,6 @@ class ProductoController extends Controller
     }
 
 
-
-
-
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
 
@@ -174,9 +157,7 @@ class ProductoController extends Controller
 
 
 
-    /**
-     * Display the specified resource.
-     */
+   
     public function show($id)
     {
         try{
@@ -218,17 +199,7 @@ class ProductoController extends Controller
         
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
 
@@ -305,9 +276,7 @@ class ProductoController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    
     public function destroy($id)
     {
 
@@ -347,11 +316,81 @@ class ProductoController extends Controller
                 'status' => false,
                 'message' => 'Ocurrio un error en la solicitud',
                 'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+        
+    }
+
+
+    public function cambiarImagenProducto(Request $request, $id){
+
+        try{
+
+            $imagenValidada = $request->validate([
+
+                'imagen_producto' =>  'required|string|nullable'
+            ]);
+
+            $productoExistente = Productos::find($id);
+
+            if(!$productoExistente){
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El producto no existe o no se encuentra en la base de datos',
+                    'code' => 404
+                ],404);
+
+            }
+
+
+            $productoExistente->update($imagenValidada);
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'La imagen del producto ha sido cambidao exitosamnete',
+                'data' => $productoExistente,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'error de validacion de la imagen del producto',
+                'warning' => $e->errors(),
                 'code' => 400
 
             ],400);
 
+
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+
         }
-        
+
+
+
+
+
+
     }
 }

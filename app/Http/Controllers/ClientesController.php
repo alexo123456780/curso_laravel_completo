@@ -60,17 +60,7 @@ class ClientesController extends Controller
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+  
     public function store(Request $request)
     {
 
@@ -81,7 +71,7 @@ class ClientesController extends Controller
 
                 'nombre_cliente' => 'required|max:255|string',
                 'email'=> 'required|unique:clientes|string',
-                'password' => 'required|min:4|max:8|string',
+                'password' => 'required|min:4|max:255|string',
                 'telefono' => 'required|max:10|string',
                 'direccion' =>'required|max:255|string',
                 'perfil_cliente' => 'required|string|nullable'
@@ -129,9 +119,74 @@ class ClientesController extends Controller
         
     }
 
-    /**
-     * Display the specified resource.
-     */
+
+
+    public function registrarCliente(Request $request){
+
+
+        try{
+
+
+            $clienteValidado = $request->validate([
+
+                'nombre_cliente' => 'required|max:255|string',
+                'email'=> 'required|unique:clientes|string',
+                'password' => 'required|min:4|max:8|string',
+                'telefono' => 'required|max:10|string',
+                'direccion' =>'required|max:255|string',
+                'perfil_cliente' => 'required|string|nullable'
+            ]);
+
+
+            $clienteValidado['password'] = Hash::make($clienteValidado['password']);
+
+
+            $clienteNuevo = Clientes::create($clienteValidado);
+
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Cliente registrado correctamente',
+                'data' => $clienteNuevo,
+                'code' => 201
+
+            ],201);
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' =>  'Ocurrio un error de validacion',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
+
+    }
+
+
+
+
+
+
+   
     public function show($id)
     {
 
@@ -176,17 +231,7 @@ class ClientesController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
+   
     public function update(Request $request, $id)
     {
 
@@ -402,27 +447,75 @@ class ClientesController extends Controller
             ],500);
 
         }
-
-
-
-
-
-
-
-
     }
 
 
+    public function cambiarFoto(Request $request, $id){
+
+        try{
+
+            $imagenValidada = $request->validate([
+
+                'perfil_cliente' => 'required|string|nullable'
+
+            ]);
+
+
+            $clienteCambiado = Clientes::find($id);
+
+
+            if(!$clienteCambiado){
+
+                return response()->json([
+
+                    'status' => 'false',
+                    'message' => 'El cliente que busca no se encuentra o no existe',
+                    'code' => 404
+                ],404);
+
+            }
+
+
+            $clienteCambiado->update($imagenValidada);
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Perfil del cliente cambiado correctamente',
+                'data' => $clienteCambiado,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error de validacion de imagen',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
 
 
 
 
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }

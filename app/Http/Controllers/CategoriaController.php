@@ -57,17 +57,7 @@ class CategoriaController extends Controller
         
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    
     public function store(Request $request)
     {
 
@@ -222,30 +212,73 @@ class CategoriaController extends Controller
     }
 
 
+    public function cambiarImagenCategoria(Request $request , $id){
 
 
+        try{
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+            $imagenValidada = $request->validate([
+
+                'imagen_categoria' => 'required|string|nullable',
+
+            ]);
+
+            $categoriaExistente = Categorias::find($id);
+
+
+            if(!$categoriaExistente){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'La categoria no existe o no se encuentra en la base de datos',
+                    'code' => 404
+                ],404);
+
+            }
+
+            $categoriaExistente->update($imagenValidada);
+
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'La imagen de la categoria ha sido cambiada exitosamente',
+                'data' => $categoriaExistente,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Ocurrio un error de validacion en la imagen',
+                'warning' => $e->errors(),
+                'code' => 400,
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error interno en la solicitud',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
+
+
+
+
 }
