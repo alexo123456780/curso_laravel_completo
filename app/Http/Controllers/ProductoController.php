@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Productos;
 
+use App\Http\Requests\AgregarStockRequest;
+
 class ProductoController extends Controller
 {
    
@@ -109,8 +111,8 @@ class ProductoController extends Controller
                 'descripcion' => 'required|string|nullable',
                 'usuario_id' => 'required|exists:usuarios,id',
                 "categoria_id" =>"required|exists:categorias,id",
-                'imagen_producto' => 'required|string|nullable'
-
+                'imagen_producto' => 'required|string|nullable',
+                'cantidad_productos' => 'required|numeric'
 
             ]);
 
@@ -386,6 +388,97 @@ class ProductoController extends Controller
 
 
         }
+    }
+
+
+    public function agregarStock(Request $request , $id){
+
+        try{
+
+            $cantidadValida = $request->validate([
+
+                'cantidad_productos' => 'required|numeric'
+
+            ],
+
+            [
+                'cantidad_productos.required' => 'La cantidad de productos debe de ser obligatoria',
+                'cantidad_productos.numeric' => 'La cantidad de productos debe de ser numerica'
+
+            ]
+
+
+        
+        );
+
+
+            if($cantidadValida['cantidad_productos'] <= 0){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'Cantidad de productos no valida',
+                    'code' => 400
+                ],400);
+            }
+
+            $productoExistente = Productos::find($id);
+
+            if(!$productoExistente){
+
+                return response()->json([
+
+                    'status' => false,
+                    'message' => 'El producto no se encuentra o no existe en la base de datos',
+                    'code' => 404
+
+                ],404);
+            }
+
+            $sumaProductos = $productoExistente['cantidad_productos'] += $cantidadValida['cantidad_productos'];
+
+            $cantidadValida['cantidad_productos'] = $sumaProductos;
+
+
+
+            $productoExistente->update($cantidadValida);
+            
+
+            return response()->json([
+
+                'status' => true,
+                'message' => 'Productos agregados al stock correctamente',
+                'data' => $productoExistente,
+                'code' => 200
+
+            ],200);
+
+
+        }catch(\Illuminate\Validation\ValidationException $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error de validaciones',
+                'warning' => $e->errors(),
+                'code' => 400
+
+            ],400);
+
+        }catch(\Exception $e){
+
+            return response()->json([
+
+                'status' => false,
+                'message' => 'Error interno',
+                'warning' => $e->getMessage(),
+                'code' => 500
+
+            ],500);
+
+        }
+
+
 
 
 
@@ -393,4 +486,9 @@ class ProductoController extends Controller
 
 
     }
+
+    
+
+
+
 }

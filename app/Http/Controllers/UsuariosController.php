@@ -107,7 +107,6 @@ class UsuariosController extends Controller
 
         try{
 
-
             $passwordValidado = $request->validate([
 
                 'password' => 'required|min:4|max:255|string'

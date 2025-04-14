@@ -18,6 +18,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             //entablo la relacion de el id del usuario con un producto
 
+            $table->integer('cantidad_productos');
 
             //nota foreign son llaves foraneas que no pertenecen a una tabla
         

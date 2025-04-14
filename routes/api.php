@@ -30,9 +30,6 @@ Route::put('cambiarFoto/{id}',[UsuariosController::class, 'cambiarFoto']);
 
 
 
-
-
-
 //clientes
 Route::apiResource('clientes',ClientesController::class);
 Route::put('cambioPassword/{id}',[ClientesController::class,'cambiarPasswordCliente']);
@@ -54,6 +51,7 @@ Route::get('productosCarro/{id}',[ClientesController::class,'verCarrito']);
 Route::apiResource('productos',ProductoController::class);
 Route::post('crearProducto',[ProductoController::class,'crearProducto']);
 Route::put('cambiarImagenP/{id}',[ProductoController::class,'cambiarImagenProducto']);
+Route::put('agregarStock/{id}',[ProductoController::class,'agregarStock']);
 
 
 
@@ -78,4 +76,4 @@ Route::get('verCarrito/{id}',[CarritosController::class,'verCarrito']);*/
 
 //ventas
 
-Route::post('ventas',[VentasController::class, 'registrarCompra']);
+Route::post('realizarVenta',[VentasController::class,'venta']);
